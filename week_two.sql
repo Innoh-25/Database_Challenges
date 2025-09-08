@@ -1,3 +1,66 @@
+-- =============================================
+-- MOVIE DATABASE SETUP AND QUERIES
+-- =============================================
+
+-- 1. CREATE DATABASE AND TABLES
+-- ==============================
+
+-- Create the database
+CREATE DATABASE MovieDB;
+USE MovieDB;
+
+-- Create Actors table with ActorName
+CREATE TABLE Actors (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    ActorName VARCHAR(100) NOT NULL,
+    age INT
+);
+
+-- Create Movies table with ReleaseYear
+CREATE TABLE Movies (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    title VARCHAR(200) NOT NULL,
+    ReleaseYear INT
+);
+
+-- Create junction table for many-to-many relationship
+CREATE TABLE Movie_Actors (
+    movie_id INT,
+    actor_id INT,
+    PRIMARY KEY (movie_id, actor_id),
+    FOREIGN KEY (movie_id) REFERENCES Movies(id) ON DELETE CASCADE,
+    FOREIGN KEY (actor_id) REFERENCES Actors(id) ON DELETE CASCADE
+);
+
+-- 2. INSERT SAMPLE DATA
+-- =====================
+
+-- Insert sample actors
+INSERT INTO Actors (ActorName, age) VALUES
+('Tom Hanks', 67),
+('Meryl Streep', 74),
+('Leonardo DiCaprio', 49),
+('Scarlett Johansson', 39),
+('Robert Downey Jr.', 58);
+
+-- Insert sample movies
+INSERT INTO Movies (title, ReleaseYear) VALUES
+('Forrest Gump', 1994),
+('The Devil Wears Prada', 2006),
+('Titanic', 1997),
+('Avengers: Endgame', 2019),
+('The Shawshank Redemption', 1994);
+
+-- Link actors to movies
+INSERT INTO Movie_Actors (movie_id, actor_id) VALUES
+(1, 1),  -- Tom Hanks in Forrest Gump
+(2, 2),  -- Meryl Streep in The Devil Wears Prada
+(3, 3),  -- Leonardo DiCaprio in Titanic
+(4, 4),  -- Scarlett Johansson in Avengers: Endgame
+(4, 5),  -- Robert Downey Jr. in Avengers: Endgame
+(1, 2);  -- Meryl Streep also in Forrest Gump
+
+-- 3. QUERY EXAMPLES
 -- =================
 
 -- Query 1: Get all actors with their details
@@ -104,4 +167,3 @@ SELECT title, ReleaseYear
 FROM Movies 
 ORDER BY ReleaseYear DESC 
 LIMIT 1;
-
